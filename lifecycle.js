@@ -1,7 +1,7 @@
 Lifecycle = {};
 var url = process.env.API_URL || 'https://api.lifecycle.io/v1'
 
-Lifecycle.Track = function (eventId, uniqueId, properties) {
+Lifecycle.track = function (eventId, uniqueId, properties) {
 
 	var key = process.env.LIFECYCLE_API_KEY;
 	if (!key) {
@@ -21,7 +21,7 @@ Lifecycle.Track = function (eventId, uniqueId, properties) {
 	});
 };
 
-Lifecycle.Identify = function (uniqueId, defaultAttributes, extraAttributes) {
+Lifecycle.identify = function (uniqueId, defaultAttributes, extraAttributes) {
 
 	var key = process.env.LIFECYCLE_API_KEY;
 	if (!key) {
