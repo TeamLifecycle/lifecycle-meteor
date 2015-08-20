@@ -2,10 +2,12 @@ Lifecycle = {};
 var url = process.env.API_URL || 'https://api.lifecycle.io/v1'
 
 Lifecycle.Track = function (eventId, uniqueId, properties) {
+
 	var key = process.env.LIFECYCLE_API_KEY;
 	if (!key) {
-		return console.log("no LIFECYCLE_API_KEY set");
+		return new Meteor.Error('Lifecycle Authorization Failed', 'LIFECYCLE_API_KEY is not set');
 	}
+
 	return HTTP.call("POST", url + "/track", {
 		headers: {
 			"Content-Type": "application/json",
@@ -19,34 +21,26 @@ Lifecycle.Track = function (eventId, uniqueId, properties) {
 	});
 };
 
-Lifecycle.Identify = function (uniqueId, data, extraAttributes) {
+Lifecycle.Identify = function (uniqueId, defaultAttributes, extraAttributes) {
+
 	var key = process.env.LIFECYCLE_API_KEY;
 	if (!key) {
-		return console.log("no LIFECYCLE_API_KEY set");
+		return new Meteor.Error('Lifecycle Authorization Failed', 'LIFECYCLE_API_KEY is not set');
 	}
-	if (!uniqueId) {
-		return console.log("Must provide `uniqueId` to IdentifyUser");
+
+	if (!uniqueId || typeof uniqueId !== 'string') {
+		return new Meteor.Error('Lifecycle Invalid Parameters', '`uniqueId` must be supplied to `Identify` function');
 	}
+
+	var sendData = defaultAttributes;
+	sendData.unique_id = uniqueId;
+	sendData.attributes = extraAttributes;
+
 	return HTTP.call("POST", url + "/identify", {
 		headers: {
 			"Content-Type": "application/json",
 			"lifecycle-api-key": key
 		},
-		data: {
-			unique_id		: uniqueId,
-			first_name		: data.firstName,
-			last_name		: data.lastName,
-			email_address	: data.email,
-			phone_number	: data.phone,
-			apns_token		: data.apns,
-			gcm_token		: data.gcm,
-			browser_token	: data.browser,
-			street_address	: data.street,
-			city			: data.city,
-			state			: data.state,
-			zip_code		: data.zip,
-			device_type		: data.deviceType
-			attributes 		: extraAttributes || {}
-		}
+		data: sendData
 	});
 };
