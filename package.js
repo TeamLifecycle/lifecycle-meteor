@@ -1,6 +1,6 @@
 Package.describe({
 	name: 'lifecycle:lifecycle',
-	version: '0.0.2',
+	version: '0.0.3',
 	summary: 'Meteor package for interfacing with Lifecycle REST api',
 	git: 'https://github.com/TeamLifecycle/lifecycle-meteor.git',
 	documentation: 'README.md'
