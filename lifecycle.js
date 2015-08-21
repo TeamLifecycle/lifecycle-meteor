@@ -1,5 +1,5 @@
 Lifecycle = {};
-var url = process.env.API_URL || 'https://api.lifecycle.io/v1'
+var url = process.env.LIFECYCLE_API_URL || 'https://api.lifecycle.io/v1'
 
 Lifecycle.track = function (eventId, uniqueId, properties) {
 
